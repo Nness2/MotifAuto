@@ -6,6 +6,8 @@ import random
 import math
 import argparse
 
+import svgwrite
+
 def giveColor(image):
     r = random.randint(0, 255)
     g = random.randint(0, 255)
