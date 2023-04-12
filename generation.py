@@ -5,8 +5,7 @@ import glob
 import random
 import math
 import argparse
-
-import svgwrite
+import subprocess
 
 def giveColor(image):
     r = random.randint(0, 255)
@@ -58,7 +57,7 @@ def loadAllMotifs(debug):
         im=Image.open(filename)
         im = im.convert("RGBA")
         im = crop_image(im, im.getbbox())
-        im = resize_image(im, (1000,1000))
+        im = resize_image(im, (200 ,200))
         if debug == True:
             im = giveColor(im)
         img_list.append(im)
@@ -176,10 +175,13 @@ def main(sizeBase, remplissage, DebugColor):
     #AddImageManually('mask.png', img, (200,200), (1800,1800), 90)
 
     # Afficher l'image
-    img.show()
+    #img.show()
     # Sauvegarder l'image
-    img.save('my_image.png', dpi=(300, 300))
-
+    img.save('my_image.png')
+    # Convert the image to PBM
+    pbm_image = img.convert("1")
+    pbm_image.save("my_image.pbm")
+    subprocess.run(["potrace", "-s", "my_image.pbm", "-o", "output.svg"])
 
 
 
