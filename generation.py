@@ -1,4 +1,4 @@
-# -*- coding: <encoding_name> -*-
+
 
 from PIL import Image
 import glob
@@ -163,6 +163,25 @@ def AddImageManually(imgpath, imgDest, position, size, rotation):
 
 
 
+def test(sizeBase, remplissage, DebugColor):
+    # Logique principale du script
+    remplissage = remplissage / 100
+    image_list = loadAllMotifs(DebugColor)
+
+    img = CreatImagebase(sizeBase)
+    img = PastMotifsOnBase(img, image_list, remplissage)
+    #AddImageManually('mask.png', img, (1000,1000), (1800,1800), 270)
+    #AddImageManually('mask.png', img, (200,200), (1800,1800), 90)
+
+    # Afficher l'image
+    #img.show()
+    # Sauvegarder l'image
+    img.save('my_image.png')
+    img.show()
+    # Convert the image to PBM
+    pbm_image = img.convert("1")
+    pbm_image.save("my_image.pbm")
+    subprocess.run(["potrace", "-s", "my_image.pbm", "-o", "output.svg"])
 
 def main(sizeBase, remplissage, DebugColor):
     # Logique principale du script
